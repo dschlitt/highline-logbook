@@ -4,6 +4,6 @@
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton/optional/presets';
-@import '@skeletonlabs/skeleton/themes/sahara';
+@import '@skeletonlabs/skeleton/themes/seafoam';
 
 @source '../node_modules/@skeletonlabs/skeleton-svelte/dist';
