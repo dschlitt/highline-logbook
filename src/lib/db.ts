@@ -4,7 +4,7 @@ interface Webbing {
 	id: number;
 	name: string;
 	segmentNumber: number;
-	length: string;
+	length: number;
 	purchaseDate: string;
 	backlogDays: number;
 	notes: string;
@@ -30,7 +30,7 @@ const dummyData = [
 	{
 		name: 'y2k',
 		segmentNumber: 2,
-		length: '54',
+		length: 54,
 		purchaseDate: '2022-03-13',
 		backlogDays: 75,
 		notes: 'Took to Colombia, gifted to Diego'
@@ -38,7 +38,7 @@ const dummyData = [
 	{
 		name: 'y2k',
 		segmentNumber: 3,
-		length: '54',
+		length: 54,
 		purchaseDate: '2022-03-13',
 		backlogDays: 45,
 		notes: ''
@@ -46,14 +46,14 @@ const dummyData = [
 	{
 		name: 'y2k',
 		segmentNumber: 4,
-		length: '54',
+		length: 54,
 		backlogDays: 45,
 		purchaseDate: '2022-03-13',
 		notes: ''
 	},
 	{
 		name: 'y2k',
-		length: '54',
+		length: 54,
 		segmentNumber: 5,
 		backlogDays: 45,
 		purchaseDate: '2022-03-13',

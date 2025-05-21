@@ -9,15 +9,21 @@
 
 <header class="m-8 text-center text-5xl">Your Webbing</header>
 
+<div class="container flex flex-row place-content-evenly">
+	<a href="/addWebbing" type="button" class="btn preset-tonal-tertiary w-fit self-center"
+		>Add Webbing</a
+	>
+</div>
+
 {#if $webbings}
-	<div class="m-2 flex flex-col items-center justify-center">
+	<div class="m-2 mb-20 flex flex-col items-center justify-center">
 		{#each $webbings as webbing: Webbing}
 			<a
-				href="/webbingDetail[:id]"
+				href="/webbing/{webbing.id}"
 				class="card preset-filled-surface-100-900 border-surface-200-800 card-hover divide-surface-200-800 m-2 block w-full max-w-md divide-y overflow-hidden border-[1px] p-2"
 			>
 				<header class="flex justify-between">
-					<h1 class="h2 w-fit">{webbing.name}-{webbing.segmentNumber}</h1>
+					<h1 class="h2 w-fit">{webbing.name}-{webbing.length}m #{webbing.segmentNumber}</h1>
 					<h2 class="h3 text-right">{webbing.backlogDays} days</h2>
 				</header>
 				{#if webbing.notes}
