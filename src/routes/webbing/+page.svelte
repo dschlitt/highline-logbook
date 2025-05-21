@@ -1,0 +1,33 @@
+<script lang="ts">
+	import { browser } from '$app/environment';
+	import { db } from '$lib/db';
+	import { liveQuery } from 'dexie';
+	import { type Webbing } from '$lib/db';
+
+	let webbings = liveQuery(() => (browser ? db.webbing.toArray() : []));
+</script>
+
+<header class="m-8 text-center text-5xl">Your Webbing</header>
+
+{#if $webbings}
+	<div class="m-2 flex flex-col items-center justify-center">
+		{#each $webbings as webbing: Webbing}
+			<a
+				href="/webbingDetail[:id]"
+				class="card preset-filled-surface-100-900 border-surface-200-800 card-hover divide-surface-200-800 m-2 block w-full max-w-md divide-y overflow-hidden border-[1px] p-2"
+			>
+				<header class="flex justify-between">
+					<h1 class="h2 w-fit">{webbing.name}-{webbing.segmentNumber}</h1>
+					<h2 class="h3 text-right">{webbing.backlogDays} days</h2>
+				</header>
+				{#if webbing.notes}
+					<article class="">
+						<p>{webbing.notes}</p>
+					</article>
+				{/if}
+			</a>
+		{/each}
+	</div>
+{:else}
+	<p>webbing loading ...</p>
+{/if}

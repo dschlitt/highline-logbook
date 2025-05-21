@@ -1,4 +1,23 @@
 <script lang="ts">
+	import { db } from '$lib/db';
+
+	let webName = '';
+	let webLength = '';
+	let webPurchaseDate = '';
+	let webNotes = '';
+	let webBacklogDays = '';
+
+	async function addWebbing() {
+		try {
+			const id = await db.webbing.add({
+				name: webName,
+				length: webLength,
+				purchaseDate: webPurchaseDate,
+				notes: webNotes
+			});
+		} catch {}
+	}
+
 	async function handleSubmit(
 		event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }
 	) {
