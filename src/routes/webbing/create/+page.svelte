@@ -2,14 +2,14 @@
 	import { db } from '$lib/db';
 	import { text } from '@sveltejs/kit';
 
-	let status = '';
+	let status = $state('');
 
-	let webName = '';
-	let webNumber = '';
-	let webBacklogDays = 0;
-	let webLength = 0;
-	let webPurchaseDate = '';
-	let webNotes = '';
+	let webName = $state('');
+	let webNumber = $state('');
+	let webBacklogDays: Number | undefined = $state();
+	let webLength: Number | undefined = $state();
+	let webPurchaseDate = $state('');
+	let webNotes = $state('');
 
 	async function addWebbing() {
 		try {
@@ -39,7 +39,6 @@
 		event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }
 	) {
 		event.preventDefault();
-		const data = new FormData(event.currentTarget);
 
 		addWebbing();
 	}
@@ -59,27 +58,52 @@
 		-->
 		<label class="label">
 			<span class="label-text">Webbing Name (e.g. y2k)</span>
-			<input class="input" type="text" bind:value={webName} autocomplete="off" required />
-		</label>
-
-		<label class="label">
-			<span class="label-text">Segment Number (e.g. 1 if you own one piece)</span>
-			<input class="input" type="text" bind:value={webNumber} autocomplete="off" />
+			<input
+				class="input"
+				type="text"
+				bind:value={webName}
+				autocomplete="off"
+				required
+				placeholder="Kill Bill"
+			/>
 		</label>
 
 		<label class="label">
 			<span class="label-text">Length (meters)</span>
-			<input class="input" type="number" bind:value={webLength} autocomplete="off" required />
+			<input
+				class="input"
+				type="number"
+				bind:value={webLength}
+				autocomplete="off"
+				required
+				placeholder="80"
+			/>
+		</label>
+
+		<!-- TODO: enforce uniqueness, suggest auto incrementing number for this name -->
+		<!-- Could I support bulk add here and create new sub ids as necessary? -->
+		<label class="label">
+			<span class="label-text"
+				>Segment Number (1 if you have 1 piece, 2 if you have 2 of the same, etc...)</span
+			>
+			<input class="input" type="text" bind:value={webNumber} autocomplete="off" placeholder="1" />
 		</label>
 
 		<label class="label">
 			<span class="label-text">Backlog Days (how many days has your segment been rigged?)</span>
-			<input class="input" type="number" bind:value={webBacklogDays} autocomplete="off" required />
+			<input
+				class="input"
+				type="number"
+				bind:value={webBacklogDays}
+				autocomplete="off"
+				required
+				placeholder="69"
+			/>
 		</label>
 
 		<label class="label">
 			<span class="label-text"> Notes </span>
-			<textarea class="textarea" rows="4" bind:value={webNotes}></textarea>
+			<textarea class="textarea" rows="2" bind:value={webNotes} placeholder='Good weight training. Me likey'></textarea>
 		</label>
 
 		<button class="btn preset-outlined-surface-300-700 mt-2" type="submit">Save</button>

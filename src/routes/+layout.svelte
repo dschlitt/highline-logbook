@@ -4,7 +4,6 @@
 
 	import { Navigation } from '@skeletonlabs/skeleton-svelte';
 	// Icons
-	import { SquarePen } from '@lucide/svelte';
 	import { Sheet } from '@lucide/svelte';
 	import { Calendar } from '@lucide/svelte';
 
@@ -14,14 +13,13 @@
 	$inspect(page.route.id);
 </script>
 
-{@render children()}
+<div class="mb-20">
+	{@render children()}
+</div>
 
 <!-- Component -->
 <div class="fixed bottom-0 w-full">
 	<Navigation.Bar>
-		<Navigation.Tile href="/addWebbing" label="Add" selected={page.route.id == '/addWebbing'}
-			><SquarePen /></Navigation.Tile
-		>
 		<Navigation.Tile href="/webbing" label="Webbing" selected={page.route.id.startsWith('/webbing')}
 			><Sheet /></Navigation.Tile
 		>
