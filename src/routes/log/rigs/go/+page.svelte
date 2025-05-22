@@ -2,7 +2,6 @@
 	import { MultiSelect } from 'svelte-multiselect';
 	import { liveQuery } from 'dexie';
 	import { db, type Webbing, type Rig } from '$lib/db';
-	import { onMount } from 'svelte';
 
 	let rigName = $state('');
 	let status = $state('');
