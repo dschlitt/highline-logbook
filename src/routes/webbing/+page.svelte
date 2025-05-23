@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { db, type Webbing } from '$lib/db';
-	import { liveQuery } from 'dexie';
+	import { type Observable, liveQuery, type PromiseExtended } from 'dexie';
 
-	let webbings = liveQuery(() => (browser ? db.webbing.toArray() : []));
+	let webbings = liveQuery(() => db.webbing.toArray()); // TODO do I need to prevent this from running on the server?
 
-	// let webbingDaysAccumulator : Object & {string:number} = {};
+	const accumulator : { [key: string]: number } = {};
 
-	let webbingDays = liveQuery(() => (browser ? db.rig.where({up: 0}).toArray().then(
+	let webbingDays : Observable<void | { [key: string]: number }> = liveQuery(() => db.rig.where({up: 0}).toArray().then(
 		(rigs) => {
 			return rigs.reduce((
 				accumulator, rig
@@ -29,11 +29,13 @@
 					}
 				});
 				return accumulator;
-			}, {});
+			}, accumulator);
 		}
-	) : []));
+	).catch((error) => {
+		// TODO handle error case
+		// TODO what are the errors?
+	}));
 
-	$inspect(webbingDays);
 </script>
 
 <header class="m-8 text-center text-5xl">Your Webbing</header>
@@ -43,12 +45,6 @@
 		>Add Webbing</a
 	>
 </div>
-
-{#if $webbingDays}
-	{#each $webbingDays as day}
-		<p>{day.key} : {day.value}</p>
-	{/each}
-{/if}
 
 {#if $webbings}
 	<div class="m-2 flex flex-col items-center justify-center">
@@ -74,4 +70,3 @@
 {:else}
 	<p>webbing loading ...</p>
 {/if}
-

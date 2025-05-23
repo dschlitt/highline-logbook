@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { db, type Rig } from '$lib/db';
 	import { liveQuery } from 'dexie';
-	import { browser } from '$app/environment';
 
-	let currentRigs = liveQuery(() => (browser ? db.rig.where({ up: 1 }).toArray() : []));
+	let currentRigs = liveQuery(() => db.rig.where({ up: 1 }).toArray());
 
 	$inspect(currentRigs);
 </script>
@@ -15,7 +14,7 @@
 		New Rig</a
 	>
 
-	<a href="/log/past-rigs" type="button" class="btn preset-tonal-tertiary m-4 w-fit self-center">
+	<a href="/log/rigs" type="button" class="btn preset-tonal-tertiary m-4 w-fit self-center">
 		Past Rigs</a
 	>
 </div>
@@ -25,7 +24,7 @@
 		<header class="text-center text-xl">Current Rigs</header>
 		{#each $currentRigs as rig: Rig}
 			<a
-				href="/rig/{rig.id}"
+				href="/log/rigs/{rig.id}"
 				class="card preset-filled-surface-100-900 border-surface-200-800 card-hover divide-surface-200-800 m-2 block w-full max-w-md divide-y overflow-hidden border-[1px] p-2"
 			>
 				<header class="flex justify-between">
