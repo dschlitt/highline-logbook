@@ -1,9 +1,9 @@
 import Dexie, { type EntityTable, type Transaction } from 'dexie';
 
 interface Webbing {
-	id: number;
+	id?: number;
 	name: string;
-	segmentNumber: number;
+	segmentNumber: string; // TODO: Change to segmentId?
 	length: number;
 	purchaseDate: string;
 	backlogDays: number;
@@ -30,7 +30,7 @@ db.version(1).stores({
 	rig: 'id++, *webbings, up'
 });
 
-const dummyWebbings = [
+const dummyWebbings: Webbing[] = [
 	{
 		name: 'y2k',
 		length: 54,
