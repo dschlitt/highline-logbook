@@ -13,6 +13,7 @@
 	let editing = $state(false);
 	let form = $state<Partial<Rig>>({});
 	let formSelected = $state<string[]>([]);
+	let saveError = $state('');
 
 	function daysUp(startDate: string, endDate?: string): number {
 		const end = endDate ? Date.parse(endDate) : Date.now();
@@ -26,14 +27,19 @@
 	}
 
 	async function save() {
-		await db.rig.update(rigId, {
-			name: form.name,
-			startDate: form.startDate,
-			endDate: form.endDate || undefined,
-			up: form.endDate ? 0 : 1,
-			webbings: formSelected
-		});
-		editing = false;
+		try {
+await db.rig.update(rigId, {
+				name: form.name,
+				startDate: form.startDate,
+				endDate: form.endDate || undefined,
+				up: form.endDate ? 0 : 1,
+				webbings: $state.snapshot(formSelected)
+			});
+			saveError = '';
+			editing = false;
+		} catch (error) {
+			saveError = `Failed to save: ${error}`;
+		}
 	}
 
 	async function takeDown() {
@@ -107,6 +113,10 @@
 					options={$allWebbings?.map((w: Webbing) => `${w.name}-${w.length}m#${w.segmentNumber}`) ?? []}
 				/>
 			</label>
+
+			{#if saveError}
+				<p class="text-error-500">{saveError}</p>
+			{/if}
 
 			<div class="flex gap-4 justify-center mt-2">
 				<button type="submit" class="btn preset-filled-primary-500">Save</button>
