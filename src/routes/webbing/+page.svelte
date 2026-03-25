@@ -1,41 +1,10 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { db, type Webbing } from '$lib/db';
-	import { type Observable, liveQuery, type PromiseExtended } from 'dexie';
+	import { liveQuery } from 'dexie';
+	import { allWebbingDays } from '$lib/webbingDays';
 
-	let webbings = liveQuery(() => db.webbing.toArray()); // TODO do I need to prevent this from running on the server?
-
-	const accumulator : { [key: string]: number } = {};
-
-	let webbingDays : Observable<void | { [key: string]: number }> = liveQuery(() => db.rig.where({up: 0}).toArray().then(
-		(rigs) => {
-			return rigs.reduce((
-				accumulator, rig
-			) => {
-				let rigLengthDays = Math.max(
-					Math.ceil(
-						Math.abs(
-							Date.parse(rig.endDate || rig.startDate) - Date.parse(rig.startDate)
-						) / (1000 * 60 * 60 * 24)
-						), 1);
-
-				rig.webbings.forEach((webbing) => {
-					if (webbing in accumulator) {
-						accumulator[webbing] += rigLengthDays
-					}
-					else
-					{
-						accumulator[webbing] = rigLengthDays
-					}
-				});
-				return accumulator;
-			}, accumulator);
-		}
-	).catch((error) => {
-		// TODO handle error case
-		// TODO what are the errors?
-	}));
-
+	let webbings = liveQuery(() => db.webbing.toArray());
+	let webbingDays = liveQuery(() => allWebbingDays());
 </script>
 
 <header class="m-8 text-center text-5xl">Your Webbing</header>
@@ -56,7 +25,7 @@
 				<header class="flex justify-between">
 					<h2 class="h2 w-fit">{webbing.name}-{webbing.length}m #{webbing.segmentNumber}</h2>
 					{#if $webbingDays}
-						<h3 class="h3 text-right">{webbing.backlogDays + ($webbingDays[`${webbing.name}-${webbing.length}m#${webbing.segmentNumber}`] || 0)} days</h3>
+						<h3 class="h3 text-right">{$webbingDays[`${webbing.name}-${webbing.length}m#${webbing.segmentNumber}`] ?? webbing.backlogDays} days</h3>
 					{/if}
 				</header>
 				{#if webbing.notes}

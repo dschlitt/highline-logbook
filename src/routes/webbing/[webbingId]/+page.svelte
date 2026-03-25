@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { db, type Webbing } from '$lib/db';
 	import { liveQuery } from 'dexie';
+	import { webbingDaysById } from '$lib/webbingDays';
 
 	const webbingId = $derived(Number(page.params.webbingId));
 
@@ -11,6 +11,10 @@
 		browser
 			? liveQuery(() => db.webbing.get(webbingId))
 			: undefined
+	);
+
+	let totalDays = $derived(
+		browser ? liveQuery(() => webbingDaysById(webbingId)) : undefined
 	);
 
 	let editing = $state(false);
@@ -40,7 +44,12 @@
 
 {#if $webbing}
 	{@const w = $webbing}
-	<header class="m-8 text-center text-4xl">{w.name}-{w.length}m #{w.segmentNumber}</header>
+	<header class="m-8 text-center">
+		<h1 class="text-4xl">{w.name}-{w.length}m #{w.segmentNumber}</h1>
+		{#if $totalDays !== undefined}
+			<p class="text-6xl font-bold mt-2">{$totalDays} <span class="text-2xl font-normal">days</span></p>
+		{/if}
+	</header>
 
 	{#if !editing}
 		<div class="container mx-auto max-w-md px-4">
