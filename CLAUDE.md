@@ -36,6 +36,8 @@ Accumulated UV days per webbing = sum of rig durations (in days) for all rigs co
 - **Reactive queries**: All pages use `liveQuery()` from Dexie — UI re-renders automatically when DB changes.
 - **Client-only DB**: IndexedDB can't run server-side; guard DB calls with `browser` from `$app/environment` where needed.
 - **No server actions**: Forms submit directly to Dexie (no SvelteKit `+page.server.ts` files).
+- **Shared calculations**: `src/lib/webbingDays.ts` contains the days-rigged logic (`allWebbingDays`, `webbingDaysById`) used by both the webbing list and details pages.
+- **Svelte 5 + Dexie**: Pass `$state.snapshot(value)` when writing reactive arrays/objects to Dexie to avoid `DataCloneError` from Proxy objects.
 - **Routing**: Two main sections — `/webbing` (manage webbing inventory) and `/log` (manage rigs). Global bottom nav in `+layout.svelte`.
 
 ### Route Structure
@@ -43,11 +45,11 @@ Accumulated UV days per webbing = sum of rig durations (in days) for all rigs co
 ```
 /webbing              — list all webbings with accumulated days
 /webbing/create       — add new webbing
-/webbing/[webbingId]  — webbing detail (in progress)
-/log                  — hub page
+/webbing/[webbingId]  — webbing detail with inline editing and total days
+/log                  — hub page with active rigs and days up
 /log/rigs             — past rigs (up=0)
 /log/rigs/go          — create new rig
-/log/rigs/[rigId]     — rig detail (in progress)
+/log/rigs/[rigId]     — rig detail with inline editing and take down action
 ```
 
 ### Tech Stack
