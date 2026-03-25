@@ -19,7 +19,7 @@
 		try {
 			await db.table('rig').add({
 				name: rigName,
-				webbings: selected,
+				webbings: $state.snapshot(selected),
 				startDate: rigStartDate,
 				up: 1
 			});
