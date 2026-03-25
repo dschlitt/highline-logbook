@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { MultiSelect } from 'svelte-multiselect';
 	import { liveQuery } from 'dexie';
-	import { db, type Webbing, type Rig } from '$lib/db';
+	import { goto } from '$app/navigation';
+	import { db, type Webbing } from '$lib/db';
 
 	let rigName = $state('');
 	let status = $state('');
@@ -9,7 +10,6 @@
 	let rigStartDate = $state(new Date().toISOString().split('T')[0]);
 
 	let webbings = liveQuery(() => db.table('webbing').toArray());
-	$inspect(webbings);
 
 	let selected: string[] = $state([]);
 
@@ -17,13 +17,13 @@
 		event: SubmitEvent & { currentTarget: EventTarget & HTMLFormElement }
 	) {
 		try {
-			const id = await db.table('rig').add({
+			await db.table('rig').add({
 				name: rigName,
 				webbings: selected,
-				startDate: rigStartDate
+				startDate: rigStartDate,
+				up: 1
 			});
-			status = 'rig added successfully';
-			// TODO: navigate somewhere..
+			goto('/log');
 		} catch (error) {
 			status = `failed to add rig, Error:${error}`;
 		}
@@ -46,15 +46,16 @@
 
 		<label class="label mb-1">
 			<span class="label-text">Webbing</span>
-
-			<!--TODO: can I mark this required -->
-			<!-- TODO disable if webbings haven't loaded, would be cool if empty array was disabled. -->
 			<MultiSelect
 				bind:selected
 				options={$webbings?.map((w: Webbing) => w.name + '-' + w.length + 'm#' + w.segmentNumber) ||
 					[]}
 			/>
 		</label>
+
+		{#if status}
+			<p class="text-error-500 mt-2">{status}</p>
+		{/if}
 
 		<button class="btn preset-outlined-surface-300-700 mt-2" type="submit">Rig It!</button>
 	</form>
