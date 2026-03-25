@@ -26,13 +26,18 @@
 		editing = true;
 	}
 
+	function onStatusChange(active: boolean) {
+		form.up = active ? 1 : 0;
+		if (active) form.endDate = undefined;
+	}
+
 	async function save() {
 		try {
-await db.rig.update(rigId, {
+			await db.rig.update(rigId, {
 				name: form.name,
 				startDate: form.startDate,
-				endDate: form.endDate || undefined,
-				up: form.endDate ? 0 : 1,
+				endDate: form.up ? undefined : form.endDate,
+				up: form.up,
 				webbings: $state.snapshot(formSelected)
 			});
 			saveError = '';
@@ -99,13 +104,22 @@ await db.rig.update(rigId, {
 				<input class="input" type="text" bind:value={form.name} required />
 			</label>
 			<label class="label">
+				<span>Status</span>
+				<select class="select" value={form.up} onchange={(e) => onStatusChange(e.currentTarget.value === '1')}>
+					<option value={1}>🟢 Active</option>
+					<option value={0}>⚫ Past</option>
+				</select>
+			</label>
+			<label class="label">
 				<span>Start Date</span>
 				<input class="input" type="date" bind:value={form.startDate} required />
 			</label>
-			<label class="label">
-				<span>End Date</span>
-				<input class="input" type="date" bind:value={form.endDate} />
-			</label>
+			{#if !form.up}
+				<label class="label">
+					<span>End Date</span>
+					<input class="input" type="date" bind:value={form.endDate} />
+				</label>
+			{/if}
 			<label class="label">
 				<span>Webbings</span>
 				<MultiSelect
