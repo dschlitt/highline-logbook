@@ -4,7 +4,9 @@
 
 	let currentRigs = liveQuery(() => db.rig.where({ up: 1 }).toArray());
 
-	$inspect(currentRigs);
+	function daysUp(startDate: string): number {
+		return Math.max(Math.ceil(Math.abs(Date.now() - Date.parse(startDate)) / (1000 * 60 * 60 * 24)), 1);
+	}
 </script>
 
 <header class="m-8 text-center text-5xl">Log a Rig</header>
@@ -29,7 +31,7 @@
 			>
 				<header class="flex justify-between">
 					<p class="text-l w-fit">{rig.name}</p>
-					<p class="text-m text-right">? days rigged</p>
+					<p class="text-m text-right">{daysUp(rig.startDate)} days</p>
 				</header></a
 			>
 		{/each}
