@@ -1,10 +1,10 @@
 {
 	"name": "Highline Log Book",
-	"short-name": "highline-logs",
-	"start-url": "/",
+	"short_name": "highline-logs",
+	"start_url": "/",
 	"display": "standalone",
-	"theme-color": "#ffffff",
-	"background_color": "#000000",
+	"theme_color": "#2F4858",
+	"background_color": "#2F4858",
 	"icons": [
 	{
 		"sizes": "192x192",
