@@ -28,8 +28,11 @@ disown
 timeout 60 bash -c 'until curl -sf http://localhost:4173 >/dev/null; do sleep 1; done'
 ```
 
-Stop either with `pkill -f "vite (dev|preview)"` when done. Pick a free
-port if 5180/4173 are already in use.
+Leave the server running after checks finish — the user may want to
+inspect it manually in a real browser. Don't `pkill` it proactively;
+only stop it (`pkill -f "vite (dev|preview)"`) if the user asks. Pick a
+free port if 5180/4173 are already in use, and mention the URL/port
+you used so the user can open it themselves.
 
 ## 2. One-time setup
 
