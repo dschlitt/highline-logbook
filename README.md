@@ -1,38 +1,61 @@
-# sv
+# 🪢 Highline Logbook
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A progressive web app for tracking highline webbing usage.
+Following the main and backup failure at [CRG 2024](www.slacklineinternational.org/2024/08/highline-webbing-lifetime/) we’ve been reminded that tracking how many days our webbing has been rigged is safety critical. This app is an opiniated log book that should help a slackliner do that more easily. 
+ 
+**Live app:** [highline-logbook.vercel.app](https://highline-logbook.vercel.app)
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
+
+- **Webbing tracker** — log which webbings were used in each rig and track cumulative days across all sessions
+- **Offline-first** — all data lives in IndexedDB via Dexie.js, no connection required
+- **Installable PWA** — add to your home screen on iOS or Android
+
+---
+
+## Tech Stack
+
+| Layer | Tool |
+|---|---|
+| Framework | [SvelteKit](https://kit.svelte.dev/) (Svelte 5) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 + [Skeleton UI](https://www.skeleton.dev/) |
+| Local storage | [Dexie.js](https://dexie.org/) (IndexedDB wrapper) |
+| Testing | Vitest + Playwright |
+| Deployment | [Vercel](https://vercel.com) |
+
+---
+
+## Getting Started
 
 ```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+git clone https://github.com/dschlitt/highline-logbook.git
+cd highline-logbook
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
 
 ```bash
-npm run build
+npm run build    # production build
+npm run check    # type-check
+npm run lint     # lint + format check
+npm test         # unit + e2e
 ```
 
-You can preview the production build with `npm run preview`.
+---
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Data & Privacy
+
+All data is stored locally in your browser's IndexedDB. Nothing is sent to a server. Clearing browser data will delete your logbook.
+
+---
+
+## Roadmap
+
+- [ ] Cloud backup / remote sync
+- [ ] Export to CSV or PDF
+- [ ] Gear retirement alerts based on usage thresholds
+- [ ] Session / send logging
+
