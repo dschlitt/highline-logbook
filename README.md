@@ -6,7 +6,7 @@ Following the main and backup failure at [CRG 2024](www.slacklineinternational.o
 **Live app:** [highline-logbook.vercel.app](https://highline-logbook.vercel.app)
 
 # WIP 
-Still in development, use at your own risk. Do not trust it with your data yet. Import / Export not implemented, browser cache data coule be cleared deleting your log book, or updates could wipe your data too.
+Still in development, use at your own risk. Do not trust it with your data yet. Import / Export not implemented, browser cache data could be cleared deleting your log book, or updates could wipe your data too.
 
 ---
 
